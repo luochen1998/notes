@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 引入react核心库 -->
+    <script src="../reactjs/react.development.js"></script>
+    <!-- 引入reactDom操作库 -->
+    <script src="../reactjs/react-dom.development.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      //创建react元素
+      const div = React.createElement(
+        "div",
+        {
+          id: "btn",
+          onClick: () => {
+            alert("123")
+          },
+        },
+        "我是react创建的div"
+      )
+      //创建react根元素，需要一个dom元素作为参数
+      const root = ReactDOM.createRoot(document.getElementById("root"))
+      root.render(div)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+
+        /**
+         * 1.使用ctx.ellipse(x,r,rx,ry,rotate,startAngle,endAngle,dir)绘制椭圆 
+         * x y原点坐标 
+         * rx ry x轴半径和y轴半径
+         * rotate x轴旋转角度（顺时针）
+         * startAngle 起始点角度 默认0（3点钟方向）
+         * endAngle  终点角度
+         * dir  绘制方向  false（顺时针 默认）  true 逆时针
+         */
+        //绘制椭圆
+        const ctx1 = createCanvas()
+        ctx1.ellipse(100, 100, 100, 50, 0, 0, Math.PI * 2)
+        ctx1.stroke()
+
+        //逆时针绘制椭圆角度旋转45度
+        ctx1.strokeStyle = "#f0f"
+        ctx1.beginPath()
+        ctx1.ellipse(100, 300, 100, 50, Math.PI / 4, 0, Math.PI / 2, true)
+        ctx1.stroke()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="c1"></canvas>
+    <script>
+        const canvas1 = document.querySelector('#c1')
+        const context1 = canvas1.getContext('2d') //创建画布
+        const canvas2 = document.createElement('canvas') //推荐使用js创建canvas标签（有提示，有助于开发）
+        document.body.append(canvas2)
+        if (!canvas2.getContext) {
+            console.log('您的浏览器不支持canvas')
+        }
+        const context2 = canvas2.getContext('2d')
+    </script>
+</body>
+
+</html>

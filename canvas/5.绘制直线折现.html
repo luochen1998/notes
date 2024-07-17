@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        //1.两点之间连线：直线 ，多个直线连接：折线
+        //2.使用ctx.moveTo(x,y)将画笔放置到指定的坐标位置
+        /*3.使用ctx.lineTo(x,y)从上一个店绘制直线路径到指定的点
+        *  上一个点可以是moveTo指定的点 也可以是lineTo指定的点，也就是多个lineTo连用形成这些
+        */
+
+        //绘制折线
+        const ctx1 = createCanvas()
+        ctx1.lineWidth = 2
+        ctx1.strokeStyle = '#f00'
+        ctx1.moveTo(20, 30) //起始位置
+        ctx1.lineTo(100, 100)
+        ctx1.lineTo(50, 50)
+        ctx1.stroke()
+
+        //绘制直线
+        const ctx2 = createCanvas()
+        ctx2.beginPath()
+        ctx2.lineWidth = 2
+        ctx2.strokeStyle = '#f00'
+        ctx2.moveTo(20, 30) //起始位置
+        ctx2.lineTo(100, 30)
+        ctx2.stroke()
+        ctx2.beginPath()
+        ctx2.lineWidth = 3
+        ctx2.strokeStyle = '#0f0'
+        ctx2.moveTo(20, 50) //起始位置
+        ctx2.lineTo(100, 50)
+        ctx2.stroke()
+    </script>
+</body>
+
+</html>

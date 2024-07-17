@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="box"></div>
+    <script>
+        /* mutationObserver(callback) 接口提供了监视对 DOM 树所做更改的能力 观察dom结构变化的管擦器 
+        
+
+            实例方法 mob.observe(target,option)
+            target : 要监听的DOM元素
+            option配置
+                attributes:Boolean 观察目标属性的改变
+                characterData :Boolean 观察目标数据的改变(改变前的数据/值)
+                childList :Boolean 观察目标子节点的变化，比如添加或者删除目标子节点，不包括修改子节点以及子节点后代变化
+                subtree : Boolean 目标及后代的改变都会监听
+                attributeOldValue : Boolean 表示需要记录改变前的目标属性值
+                characterDataOldValue :Boolean 设置了characterDataOldValue 可以省略characterData设置
+                attributeFilter ['sec','class'] //Array 监听指定的属性
+        */
+        const box = document.querySelector('.box')
+        const mob = new MutationObserver((mutations) => {
+            console.log(mutations);
+        })
+        mob.observe(box, {
+            attributes: true,
+            attributeOldValue: true
+        })
+        box.classList.add('abc')
+
+        function changeBox(){
+            
+        }
+    </script>
+</body>
+
+</html>

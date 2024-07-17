@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /** 更好的unicode支持
+         *      早期由于存储空间宝贵，unicode使用16位二进制来存储文字我们将一个16位的二进制编码叫做一个码元（code unit） 65536
+         *      由于技术的发展，Unicode对文字编码进行扩展，将某些文字扩展到32位（占用两个码元），并且将某个文字对应的二进制数字叫做
+         *      码点（code point）2**32 
+         *      ES6为了解决这个困扰，提供了一个方法codePointAt(0) 
+         *          如果当前字符超过16位 传递1时同charCodeAt(1)
+         *      同时，es6为正则表达式添加了一个flag :u,如果添加了该配置时，匹配时使用码点匹配
+         */
+
+        const text = '𠮷'
+        console.log('字符串的长度:', text.length);
+        console.log('使用正则测试:', /^.$/.test(text)); //匹配一个字符
+        console.log('使用正则测试:', /^.$/u.test(text)); //匹配一个字符
+        console.log('得到第一个码元:', text.charCodeAt(0).toString(16))
+        console.log('得到第二个码元:', text.charCodeAt(1).toString(16))
+
+        //𠮷 \ud842\udfb7
+        console.log('得到一个码点:', text.codePointAt(0))
+        console.log('得到二个码点:', text.codePointAt(1))
+        /**
+         * 判断字符串char 是32位还是16位
+         * @param {*} char
+         */
+        function is32Bit(char,index) {
+            //如果码点大于16位进制的最大值，则是32位
+            return char.codePointAt(index) > 0xffff
+        }
+
+        /**
+         *  得到一个字符串码点的真实长度
+         *  @param {*} str
+         */
+        function getLengthOfCodePoint(str) {
+            //i在索引码元
+            let len = 0
+            for (let i = 0; i < str.length; i++) {
+                if (is32Bit(str,i)) {
+                    i++
+                }
+                len++
+            }
+            return len
+        }
+        console.log(getLengthOfCodePoint('𠮷𠮷'));
+    </script>
+</body>
+
+</html>

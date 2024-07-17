@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /** 图形阴影
+        *   ctx.shadowBlur 设置模糊程度，数字越大，越模糊
+        *   ctx.shadowColor 设置阴影的偏移量
+        *   ctx.shadowOffsetX, ctx.shadowOffsetY设置阴影的偏移量
+        */
+        (() => {
+            const ctx = createCanvas()
+            ctx.shadowBlur = 10
+            ctx.shadowColor = '#ff0'
+            ctx.fillStyle = '#f00'
+            ctx.arc(200, 200, 100, 0, Math.PI * 2)
+            ctx.fill()
+        })();
+
+        (() => {
+            const ctx = createCanvas()
+            const radialGradient = ctx.createRadialGradient(150, 150, 20, 200, 200, 100)
+            radialGradient.addColorStop(0, '#f00')
+            radialGradient.addColorStop(1, '#666')
+            ctx.shadowBlur = 10  
+            ctx.shadowColor = '#666'
+            ctx.shadowOffsetX = 5
+            ctx.shadowOffsetY = 5
+            ctx.fillStyle = radialGradient
+            ctx.arc(200, 200, 100, 0, Math.PI * 2)
+            ctx.fill()
+        })()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .drop-content {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #000;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="file" multiple>
+    <div class="drop-content" ></div>
+    <script>
+        /** 
+        * new File(fileBits, fileName, options)
+        *       fileBits 一个可迭代对象，例如一个具有 ArrayBuffer、TypedArray、DataView、Blob、字符串或任何此类元素的组合的数组，将被放入 File 内
+        *       fileName 表示文件名或文件路径的字符串。
+        *       options{
+        *           type
+        *           endings
+        *           lastModified    
+        *       }
+        *   file是特殊的blob 继承blob（可以使用blob上的实例方法）
+        *   获取file三种方式
+        *       1.构造函数 new File()
+        *       2.input 文件上传
+        *       3.e.dataTransfer
+        *           
+        */
+
+        //第一种方式
+        const file = new File(['我是一个文本内容'], '文本.txt', {
+            type: 'text/plain'
+        })
+        console.log(file)
+
+        //第二种方式
+        const input = document.querySelector('input')
+        input.addEventListener('change', (e) => {
+            console.log(e.target.files);
+        })
+
+        //第三种方式
+        const dropContent = document.querySelector('.drop-content')
+        dropContent.addEventListener('dragover', (e) => {
+            e.preventDefault()
+        })
+        dropContent.addEventListener('drop', (e) => {
+            console.log(e.dataTransfer.files);
+            e.preventDefault() //如果不取消默认行为图片会被打开
+        })
+       
+    </script>
+</body>
+
+</html>

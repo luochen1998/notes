@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+  </head>
+  <body>
+    <div id="like_button_container"></div>
+    <script>
+      const test = ["孙悟空", "猪八戒", "唐僧", "沙和尚"]
+      const [a, b, ...c] = test
+      console.log(a, b, c)
+      const e = React.createElement
+      class LikeButton extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = { liked: false }
+        }
+
+        render() {
+          if (this.state.liked) {
+            return "You liked this."
+          }
+
+          return e(
+            "button",
+            { onClick: () => this.setState({ liked: true }) },
+            "Like"
+          )
+        }
+      }
+
+      const domContainer = document.querySelector("#like_button_container")
+      const root = ReactDOM.createRoot(domContainer)
+      root.render(e(LikeButton))
+      console.log(1);
+    </script>
+  </body>
+</html>

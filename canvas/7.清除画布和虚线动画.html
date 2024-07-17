@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        /* 大多数情况下，当canvas配合js动画时，实现动画效果时，默认每次都是在之前的基础上进行绘制 ，所以应该清除上次的绘画效果重新绘制*/
+        /* 使用ctx.clearRect(x,y,width,height)，清除画布种的指定矩形区域 
+        *  如果width和height 等于画布宽高  ，相当于清除整个画布，否则清除画布的一部分
+        *  清除画布的本质就是将指定的矩形区域设置透明度为0，之前的路径依然存在
+        *   如果此时没有配合beginPath,而是继续stoke()或者fill(),清除效果重现
+        */
+        (() => {
+            const ctx1 = createCanvas()
+            ctx1.lineWidth = 8
+            ctx1.strokeStyle = 'red'
+            ctx1.moveTo(0, 200)
+            ctx1.lineTo(400, 200)
+            ctx1.stroke()
+            ctx1.clearRect(0, 200, 200, 100) //设置宽度后从x的位置向y轴平均取值，所以会出现未清除干净 
+        })()
+
+
+
+        const ctx2 = createCanvas()
+        //虚线动画
+        ctx2.moveTo(30, 30)
+        ctx2.lineTo(30, 80)
+        ctx2.stroke()
+        // ctx2.beginPath()
+        ctx2.moveTo(230, 30)
+        ctx2.lineTo(230, 80)
+        ctx2.stroke()
+        ctx2.strokeStyle = '#00f'
+        ctx2.lineWidth = 10
+        ctx2.setLineDash([200])
+        ctx2.lineDashOffset = 200
+
+        function move() {
+            console.log('执行动画,异步');
+            ctx2.clearRect(30, 50, 200, 10)
+            ctx2.beginPath()
+            ctx2.lineDashOffset -= 1
+            ctx2.moveTo(30, 55)
+            ctx2.lineTo(230, 55)
+            ctx2.stroke()
+            if (ctx2.lineDashOffset === -200) ctx2.lineDashOffset = 200
+            requestAnimationFrame(move)
+        }
+        requestAnimationFrame(move)
+        console.log(2);
+        
+        //矩形动画
+        const ctx3 = createCanvas()
+        ctx3.strokeStyle = '#00f'
+        ctx3.lineWidth = 4
+        ctx3.setLineDash([10])
+        function rectMove() {
+            ctx3.clearRect(28, 96, 204, 206) 
+            ctx3.beginPath()
+            ctx3.lineDashOffset += 1
+            ctx3.rect(30, 100, 200, 200)
+            ctx3.stroke()
+            requestAnimationFrame(rectMove)
+        }
+        requestAnimationFrame(rectMove)
+
+
+
+
+
+    </script>
+</body>
+
+</html>

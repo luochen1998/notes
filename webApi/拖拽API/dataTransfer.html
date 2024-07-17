@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #000;
+        }
+
+        .box {
+            background-color: red;
+            color: #fff;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">目标区域</div>
+    <div class="box" draggable="true">拖拽元素</div>
+    <script>
+        /** dataTransfer对象
+         *      1.dataTransfer.setData(format, data)
+         *          format表示要添加到 drag object的拖动数据的类型
+         *          data表示要添加到 drag object的数据
+         *          可以设置多个值
+         *      2.dataTransfer.getData(format)
+         *      3.dataTransfer.setDragImage(img, xOffset, yOffset)
+         *              dragstart事件触发时候设置自定义拖拽的图像
+         *              xOffset使用 long 指示相对于图片的横向偏移量
+         *              yOffset使用 long 指示相对于图片的纵向偏移量
+         *      4.dataTransfer.clearData(format || undefined)
+         *              不传递参数默认删除所有已设置的数据
+         *      5.dataTransfer.types获取设置的值的类型 Array
+         *      6.dataTransfer.files
+         *      7.dataTransfer.items 只读，表示拖动操作中数据传输项的一个列表集合(适用于文件目录上传)
+         */
+        const box = document.querySelector('.box')
+        const content = document.querySelector('.content')
+        box.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/html', '<p>我是一个拖拽文本标签</p>')
+            e.dataTransfer.setData('text/plain', '我是一个拖拽文本')
+            // e.dataTransfer.clearData()
+            const img = new Image()
+            img.src = '../img/04.png'
+            e.dataTransfer.setDragImage(img, 200, 200)
+
+        })
+        content.addEventListener('dragover', (e) => {
+            e.dataTransfer.dropEffect = 'copy'
+            e.preventDefault()
+        })
+        content.addEventListener('drop', (e) => {
+            e.dataTransfer.getData('text/html')
+            console.log(e.dataTransfer.types)
+            const p = e.dataTransfer.getData('text/html')
+            content.innerHTML = p
+            box.remove()
+            e.preventDefault()
+        })
+    </script>
+</body>
+
+</html>

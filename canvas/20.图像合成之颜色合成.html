@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+</head>
+
+<body>
+	<script>
+		const createCanvas = (width = 400, height = 400) => {
+			const canvas = document.createElement("canvas")
+			document.body.append(canvas)
+			canvas.width = width
+			canvas.height = height
+			canvas.style.border = "1px solid"
+			const ctx = canvas.getContext("2d")
+			return ctx
+		}
+		/**图像合成之颜色合成
+		*  关注的是颜色混合，图形的形状没有变化。
+		*	lighter 重叠部分的颜色相加
+		*	multiply 整体偏暗
+		*	screen	整体偏亮
+		*	darken 同一个像素的颜色，取暗色，整体偏暗	
+		*	lighten 同一个像素的颜色，取亮色，整体偏亮	
+		*/
+
+		//lighter
+		(function () {
+			const ctx = createCanvas(300, 300)
+			ctx.fillStyle = '#f00'
+			ctx.fillRect(100, 100, 100, 100)
+			ctx.globalCompositeOperation = 'lighter'
+			ctx.beginPath()
+			ctx.fillStyle = '#0f0'
+			ctx.fillRect(150, 150, 100, 100)
+		})();
+
+		//multiply
+		(function () {
+			const ctx = createCanvas()
+			const img1 = new Image()
+			img1.src = './image/04.png'
+			img1.onload = () => {
+				ctx.drawImage(img1, 200 - img1.width / 2, 200 - img1.height / 2)
+				ctx.globalCompositeOperation = 'multiply' //使用图片源时ctx.globalCompositeOperation需要放置在onload里面（前一个图像或者后一个图像都可以）
+			}
+			const img2 = new Image()
+			img2.src = './image/05.png'
+			img2.onload = () => {
+				ctx.drawImage(img2, 200 - img2.width / 2, 200 - img2.height / 2)
+			}
+		})();
+
+
+		//screen
+		(function () {
+			const ctx = createCanvas()
+			const img1 = new Image()
+			img1.src = './image/04.png'
+			img1.onload = () => {
+				ctx.drawImage(img1, 200 - img1.width / 2, 200 - img1.height / 2)
+				ctx.globalCompositeOperation = 'screen'
+			}
+			const img2 = new Image()
+			img2.src = './image/05.png'
+			img2.onload = () => {
+				ctx.drawImage(img2, 200 - img2.width / 2, 200 - img2.height / 2)
+			}
+		})();
+
+		//lighten
+		(function () {
+			const ctx = createCanvas()
+			const img1 = new Image()
+			img1.src = './image/04.png'
+			img1.onload = () => {
+				ctx.drawImage(img1, 200 - img1.width / 2, 200 - img1.height / 2)
+				ctx.globalCompositeOperation = 'lighten'
+			}
+			const img2 = new Image()
+			img2.src = './image/05.png'
+			img2.onload = () => {
+				ctx.drawImage(img2, 200 - img2.width / 2, 200 - img2.height / 2)
+			}
+		})();
+
+		//darken
+		(function () {
+			const ctx = createCanvas()
+			const img1 = new Image()
+			img1.src = './image/04.png'
+			img1.onload = () => {
+				ctx.drawImage(img1, 200 - img1.width / 2, 200 - img1.height / 2)
+				ctx.globalCompositeOperation = 'darken'
+			}
+			const img2 = new Image()
+			img2.src = './image/05.png'
+			img2.onload = () => {
+				ctx.drawImage(img2, 200 - img2.width / 2, 200 - img2.height / 2)
+			}
+		})()
+	</script>
+</body>
+
+</html>

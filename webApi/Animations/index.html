@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+    <script>
+        /* 
+            Element.animate(keyframes, options)
+                keyframes 关键帧对象数组，或一个关键帧对象（其属性为可迭代值的数组）
+                options 代表动画持续时间的整数（以毫秒为单位），或者一个包含一个或多个时间属性
+        */
+        const box = document.querySelector('.box');
+        function getColor() {
+            return '#' + Math.random().toString(16).slice(2, 8)
+        }
+        
+        box.animate([
+            { backgroundColor: getColor(), offset: 0.5 },
+            { backgroundColor: getColor(), offset: 1 }
+        ], {
+            duration: 2000,
+            fill: 'forwards'
+        })
+    </script>
+</body>
+
+</html>

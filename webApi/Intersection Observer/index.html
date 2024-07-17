@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        .content {
+            width: 100px;
+            height: 200px;
+            border: 2px solid #fac;
+            overflow: scroll;
+        }
+
+        .content div {
+            width: 50px;
+            height: 100px;
+            background-color: #cfa;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div class="box">box</div>
+    </div>
+    <script>
+        const content = document.querySelector('.content')
+        const box = document.querySelector('.box')
+
+
+        /* Intersection Observer 交叉观察器 
+            提供了一种异步检测目标元素与祖先元素或顶级文档的视口相交情况变化的方法
+
+            下面这些情况都需要用到相交检测:
+            在页面滚动时“懒加载”图像或其他内容。
+            实现“无限滚动”网站，在滚动过程中加载和显示越来越多的内容，这样用户就不必翻页了。
+            报告广告的可见度，以便计算广告收入。
+            根据用户是否能看到结果来决定是否执行任务或动画进程
+
+            IntersectionObserver(callback, options)
+            callback(entries)=>{}  
+                entries返回一个数组  包含每一个入口对象
+            
+            options
+                root 用作视口的元素，用于检查目标的可见性。必须是目标的祖先。如果未指定或为 null，则默认为浏览器视口
+                rootMargin 根周围的边距。其值可以类似于 CSS margin 属性，例如 "10px 20px 30px 40px"（上、右、下、左）。这些值可以是百分比。在计算交叉点之前，这组值用于增大或缩小根元素边框的每一侧。默认值为全零 (不常用)。
+                threshold 一个数字或一个数字数组，数值表示目标可见度达到多少百分比时，数组表示每次能见度超过百分之多少时都执行回调，观察器的回调就应该执行。
+                     数组模式[0, 0.25, 0.5, 0.75, 1] 每次能见度超过 25% 时都执行回调
+
+
+            实例方法 
+            ob.observe(el) 监听的目标元素   
+            ob.unobserve(el)  取消监听
+        */
+
+
+        const ob = new IntersectionObserver((entries, observer) => {
+            console.log(entries);
+            console.log('交叉情况变化了', observer);
+            entries.forEach((entry) => {
+                // 每个条目描述一个目标元素观测点的交叉变化：
+                //   entry.boundingClientRect
+                //   entry.intersectionRatio
+                //   entry.intersectionRect
+                //   entry.isIntersecting
+                //   entry.rootBounds
+                //   entry.target
+                //   entry.time
+                if(entry.isIntersecting){
+                    console.log('满足交叉条件');
+                    ob.unobserve(entry.target)  //触发后删除
+                }else{
+                    console.log('不满足交叉条件');
+                }
+            });
+          
+        }, {
+            root: content,
+            //rootMargin,
+            threshold: 1,  //1表示完全进入
+        })
+        ob.observe(box)
+    </script>
+</body>
+
+</html>

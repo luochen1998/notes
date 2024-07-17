@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function createCanvas(width = 400, height = 400) {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        //1.stroke或者fill默认对之前所有的绘制路径进行处理()
+        /*2.当我们需要对当前指定的图形路径绘制时，使用ctx.beginPath()方法，为不同的绘制路径设置分组（开关）
+        *此时就只对紧邻这组的路径进行绘制
+        */
+        //3.使用fillRect和strokeRect不会用影响（默认分组）
+        
+        const ctx1 = createCanvas()
+        ctx1.beginPath()   
+        ctx1.rect(100, 100, 200, 200)
+        ctx1.strokeStyle = '#00f'
+        ctx1.fillStyle='#0f0'
+        ctx1.lineWidth = 5
+        ctx1.stroke()
+        ctx1.fill()
+        ctx1.beginPath()
+        ctx1.rect(50, 50, 100, 100)
+        ctx1.fillStyle = '#f00'
+        ctx1.lineWidth = 5
+        ctx1.fill()
+    </script>
+</body>
+
+</html>

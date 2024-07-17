@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    .content {
+        height: 60px;
+        background-color: brown;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-size: 14px;
+        color: #000;
+        text-align: center;
+    }
+
+    .content-left {
+        width: 100px;
+        border-right: 1px solid blueviolet;
+    }
+
+    .content-right {
+        padding-left: 20px;
+        text-align: left;
+        flex: 1;
+        height: 20px;
+
+        overflow-y: hidden;
+    }
+
+    .content-right>li {
+        height: inherit;
+        line-height: 20px;
+    }
+</style>
+
+<body>
+    <div class="content">
+        <div class="content-left">
+            最新公告
+        </div>
+        <!-- li*4>lorem4 乱数假文  表示每个li随机生产4个单词的填充 -->
+        <ul class="content-right">
+            <li>大象装冰箱共分几步</li>
+            <li>第一步</li>
+            <li>第二步</li>
+            <li>第三步</li>
+        </ul>
+    </div>
+    <script>
+        let list = document.querySelector('.content-right')
+        const firstItem = list.children[0]
+        const newItems = firstItem.cloneNode(true)  //深度克隆
+        list.appendChild(newItems)
+        const duration = 2000   //滚动的时间间隔
+        const itemHeight = 20  //每一项的高度
+        let curIndex = 0  //目前是第几项
+       
+        //将列表滚动待下一个位置
+        const moveNext = () => {
+            var from = curIndex * itemHeight  //开始滚动的高度
+            curIndex++
+            var to = curIndex * itemHeight   //下一项滚动的高度
+            /* 让list的scrollTop，从form慢慢变为 to */
+            var toTalDuration = 500 //变化的总时间
+            var duration = 10   //变化的间隔时间
+            var times = toTalDuration / duration
+            var dis = (to - from) / times; //每次变化的量
+            var timerId = setInterval(() => {
+                from += dis
+                if (from >= to) {
+                    clearInterval(timerId)  //到达目标值停止计时器
+
+                    //滚动完成后(如果是最后一项)
+                    if (curIndex === list.children.length - 1) {
+                        from = 0
+                        curIndex = 0
+                    }
+                }
+                list.scrollTop = from
+                console.log(list.scrollTop);
+            }, duration)
+
+        }
+        setInterval(moveNext, duration)
+    </script>
+</body>
+
+</html>

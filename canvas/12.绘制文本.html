@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        /**
+         *  1.使用ctx.fillText(textStr,x,y,maxWidth),绘制填充文本
+         *  2.使用ctx.strokeText(textStr,x,y,maxWidth),绘制描边文本（镂空）
+         *    textStr 文本内容
+         *    x,y文本位置坐标
+         *    maxWidth(可选)设置文本最大宽度
+         *      如果文本宽度>最大宽度会自动压缩在maxWidth范围内
+         *      没有超出则没变化
+         *  3.使用ctx.font属性设置文本样式（粗体，斜体，大小，字体）
+         *      必须设置字体,否则其他样式无效
+         *  4.使用ctx.textAlign设置基于锚点水平位置 （left,center,right）
+         *  5.使用ctx.textBaseline属性，设置基于锚点的垂直位置(bottom,middle,top)
+         *  6.ctx.measureText文本预估    返回一个对象  可以对当前文字进行更精细设置() 
+         */
+
+        //绘制填充文本
+        const ctx1 = createCanvas()
+        ctx1.font = '700 italic 40px sans-serif'  //表示设置一个粗的斜体大小为40px的字体
+        ctx1.fillText('test', 100, 100)
+        //绘制镂空文本
+        ctx1.beginPath()
+        ctx1.font = '700 italic 80px sans-serif'  //表示设置一个粗的斜体大小为80px的字体
+        ctx1.strokeText('设置最大宽', 100, 200, 200)
+        //绘制镂空文本
+        ctx1.beginPath()
+        ctx1.font = '700 italic 80px sans-serif'  //表示设置一个粗的斜体大小为80px的字体
+        ctx1.strokeText('未设置', 100, 300)
+
+        //绘制基于锚点居中文本
+        const ctx2 = createCanvas()
+        ctx2.fillStyle = 'red'
+        ctx2.font = '700 italic 40px sans-serif'
+        ctx2.textAlign = 'center'  //基于锚点水平居中
+        ctx2.textBaseline = 'middle' //基于锚点垂直居中
+        ctx2.fillText('锚点居中', 200, 200)
+        ctx2.beginPath()
+        ctx2.arc(200, 200, 3, 0, Math.PI * 2)
+        ctx2.stroke()
+
+        //文本预估对象
+        const ctx3 = createCanvas()
+        // ctx3.fillText('文本预估', 100, 100)
+        const view = ctx3.measureText('文本预估');
+        console.log(view)
+
+    </script>
+</body>
+
+</html>

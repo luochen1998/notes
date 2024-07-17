@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /**图像变换 canvas没有提供斜切方法，可以利用矩阵变换来实现
+        * 矩阵变换又可以实现所有的图形变换（平移，缩放，旋转，斜切）
+        * 
+        * 1.矩阵变换机制
+        *    所谓的变换就是将原坐标按照一定的变换公式（逻辑），变成一个新的坐标  
+        *    （x,y) ---矩阵---（x',y'）
+        *    使用齐次坐标系来进行矩阵变换，可以简化平移计算
+        *    |x|     |a c e|    |x'|
+        *    |y|  *  |b d f|  = |y'|    
+        *    |1|     |0 0 1|    |1 |
+        *    x' = x*a + y*c + 1*e
+        *    y' = x*b + y*d + 1*f
+        *    1  = x*0 + y*0 + 1*1
+        *   
+        *    使用ctx.transform(a,b,c,d,e,f)方法传递转换矩阵，实现图形变换
+        * 
+        * 2 矩阵移动 就在原有的x,y的基础上，移动指定的数值
+        *    1,0,e
+        *    0,1,f
+        * 
+        * 3 矩阵缩放
+        *   在原有x,y的基础上，乘上指定的倍率。
+        *     a,0,0
+        *     0,d,0
+        *   横向放大至2，纵向缩小至0.5
+        *   ctx.transform(2,0,0,.5,0,0)
+        * 
+        * 4 矩阵斜切
+        *   延x或y轴做一个拉扯，使得与x轴或者y轴形成一个夹角。
+        *       沿x斜切，会产生y轴的夹角。
+        *       沿y轴斜切会产生与x轴的夹角。
+        * 
+        * 5矩阵旋转
+        *   旋转也会发生一个角度的变化
+        *   旋转都是基于x轴正方向，顺时针旋转
+        *   这里面的旋转角度是基于原位置的旋转角度，而不是基于x轴的旋转角度，所以还要考虑原位置与x轴的夹角
+        *   
+        *       合角公式
+        *       sin(a+b)=sin(a)*cos(b)+cos(a)*sin(b)
+        *       cos(a+b)=cos(a)*cos(b)-sin(a)*sin(b)
+        *       
+        *           cos(angle) -sin(angle) 0
+        *           sin(angle) cos(angle)  0
+        */
+
+        //矩阵平移横纵各100
+        (() => {
+            const ctx = createCanvas()
+            ctx.strokeStyle = '#f00'
+            ctx.setLineDash([10])
+            ctx.strokeRect(0, 0, 100, 100)
+            ctx.transform(1, 0, 0, 1, 100, 100)
+            ctx.fillRect(0, 0, 100, 100)
+        })();
+
+        //矩阵缩放x放大1.5 y缩小0.5
+        (() => {
+
+            const ctx = createCanvas()
+            ctx.strokeStyle = '#f00'
+            ctx.setLineDash([10])
+            ctx.strokeRect(0, 0, 100, 100)
+            ctx.transform(1.5, 0, 0, .5, 100, 100)
+            ctx.fillRect(0, 0, 100, 100)
+        })();
+
+        //矩阵的斜切
+        (() => {
+            const ctx = createCanvas()
+            ctx.strokeStyle = '#f00'
+            ctx.setLineDash([10])
+            ctx.strokeRect(100, 150, 200, 100)
+            ctx.transform(1, 0, Math.tan(30 * Math.PI / 180), 1, 100, 150)
+            ctx.fillRect(0, 0, 200, 100)
+        })();
+
+        //矩阵的斜切
+        (() => {
+            const ctx = createCanvas()
+            ctx.strokeStyle = '#f00'
+            ctx.setLineDash([10])
+            ctx.strokeRect(100, 150, 200, 100)
+            ctx.transform(Math.cos(Math.PI/4), Math.sin(30 * Math.PI / 180), 0, 1, 100, 150)
+            ctx.fillRect(0, 0, 200, 100)
+        })();
+
+        //矩阵的旋转
+        (() => {
+            const ctx = createCanvas()
+            ctx.strokeStyle = '#f00'
+            ctx.setLineDash([10])
+            ctx.strokeRect(100, 150, 200, 100)
+            ctx.transform(Math.cos(45 * Math.PI / 180), Math.sin(45 * Math.PI / 180), -Math.sin(45 * Math.PI / 180), Math.cos(45 * Math.PI / 180), 100, 100)
+            ctx.fillRect(0, 0, 200, 100)
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center; */
+            align-items: center;
+            padding: 10px;
+        }
+
+        .drop-content {
+            border: 1px dashed #ccc;
+            width: 1000px;
+            height: 250px;
+            text-align: center;
+            line-height: 250px;
+            font-size: 20px;
+            color: #ccc;
+        }
+
+        .upload-btns {
+            width: fit-content;
+            margin: 10px;
+            display: flex;
+        }
+
+        .upload-btns>div {
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .scan-file,
+        .scan-dir {
+            background-color: blue;
+            color: #fff;
+        }
+
+        .upload {
+            background-color: red;
+            color: #fff;
+        }
+
+        table th {
+            white-space: nowrap;
+        }
+
+        table td {
+            white-space: nowrap;
+            padding: 5px 0;
+            border-top: 1px solid #ccc;
+            text-align: center;
+        }
+
+        table td:last-child {
+            cursor: pointer;
+            text-align: right;
+        }
+
+        table td:last-child:hover {
+            color: red;
+        }
+
+        table td:first-child {
+            text-align: left;
+        }
+
+        table {
+            empty-cells: show;
+            border-collapse: collapse;
+            margin: 0 auto;
+            width: 1000px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        input {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="drop-content">将目录或多个文件拖拽到此进行扫描</div>
+        <div class="upload-btns">
+            <div class="scan-file">扫描文件</div>
+            <div class="scan-dir">扫描目录</div>
+            <div class="upload">上传文件</div>
+        </div>
+        <table role="table" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <div style="text-align: start;">名称</div>
+                    </th>
+                    <th>
+                        <div>文件目录</div>
+                    </th>
+                    <th>
+                        <div>类型</div>
+                    </th>
+                    <th>
+                        <div>文件大小</div>
+                    </th>
+                    <th style="text-align: right;">
+                        <div>操作</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                <!-- <tr>
+                    <td>名称</td>
+                    <td>路径</td>
+                    <td>类型</td>
+                    <td>大小</td>
+                    <td>删除</td>
+                </tr> -->
+            </tbody>
+        </table>
+        <input type="file" class="file" multiple>
+        <input type="file" class="dir" webkitdirectory> <!-- 元素应该让用户选择文件目录而非文件 -->
+    </div>
+    <script>
+        const scanFile = document.querySelector('.scan-file') //扫描文件
+        const scanDir = document.querySelector('.scan-dir') //扫描目录
+        const upload = document.querySelector('.upload')
+        const dropContent = document.querySelector('.drop-content')
+        const list = document.querySelector('.list')
+        const fileInput = document.querySelector('input.file')
+        const dirInput = document.querySelector('input.dir')
+        const tempFileList = []
+
+        //1. 单、多文件上传
+        scanFile.addEventListener('click', () => {
+            fileInput.click()
+        })
+        fileInput.addEventListener('change', (e) => {
+            console.log(e.target.files);
+            tempFileList.push(...e.target.files)
+            renderFileList()
+        })
+
+        //2. 文件夹上传
+        scanDir.addEventListener('click', () => {
+            dirInput.click()
+        })
+        dirInput.addEventListener('change', (e) => {
+            console.log(e.target.files);
+            tempFileList.push(...e.target.files)
+            renderFileList()
+        })
+
+        //3. 拖拽上传
+        dropContent.addEventListener('dragover', (e) => e.preventDefault())
+        dropContent.addEventListener('drop', (e) => {
+            e.preventDefault()
+            // console.log(e.dataTransfer.files, 'filse')
+            console.log(e.dataTransfer.items, 'items')
+            //每一项原型链上有一个获取文件或者文件夹入口的方法  webkitGetAsEntry()
+            // 返回FileSystemFileEntry 或 FileSystemDirectoryEntry对象
+            for (const key of e.dataTransfer.items) {
+                // console.log(key.webkitGetAsEntry());
+                getFileByEntry(key.webkitGetAsEntry())
+            }
+
+        })
+        function getFileByEntry(entry, path = '') {
+            if (entry.isFile) {
+                //文件
+                entry.file(file => {
+                    file.path = `${path}${file.name}`  //创建路径
+                    tempFileList.push(file)
+                    renderFileList()
+                })
+            } else {
+                //文件夹（文件目录）
+                const reader = entry.createReader() //创建一个用于读取服务目录中的条目 FileSystemDirectoryReader 对象
+                //readEntries(successCallback, errorCallback)
+                reader.readEntries(entries => {
+                    for (const item of entries) {
+                        getFileByEntry(item, `${path}${entry.name}/`)
+                    }
+                })
+            }
+        }
+
+        //公共逻辑
+        const renderFileList = () => {
+            list.innerHTML = ''
+            tempFileList.forEach((item, index) => {
+                const tr = document.createElement('tr')
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.webkitRelativePath || item.path}</td>
+                    <td>${item.type}</td>
+                    <td>${transformByte(item.size)}</td>
+                    <td onclick=handleDelete(${index})>删除</td>`
+                list.appendChild(tr)
+            })
+
+
+        }
+        function transformByte(size) {
+            //1024 =>1KB
+            //1024KB =>1MB
+            //1024MB => 1GB
+            if (size < 1024 ** 2) {
+                return (size / 1024).toFixed(1) + 'KB'
+            } else if (size < 1024 ** 3) {
+                return (size / 1024 ** 2).toFixed(1) + 'MB'
+            } else {
+                return (size / 1024 ** 3).toFixed(1) + 'GB'
+            }
+        }
+        function handleDelete(index) {
+            tempFileList.splice(index, 1)
+            renderFileList()
+        }
+    </script>
+</body>
+
+</html>

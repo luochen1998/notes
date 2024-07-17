@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>复制页面本文内容</h1>
+    <p style="width: 400px;" class="content">
+        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww2313
+    </p>
+    <button>复制所有内容</button>
+    <button class="show">展示内容</button>
+    <script>
+        const btn = document.querySelector('button')
+        const content = document.querySelector('.content')
+        const btnShow = document.querySelector('.show')
+        // document.oncopy = (e) => {
+        //     console.log('触发copy事件');
+        // }
+        document.onpaste = async (e) => {
+            console.log('触发paste粘贴事件');
+            //返回一个ClipboardItem数组对象
+            const val = await navigator.clipboard.read()
+            // console.log(val);
+            const item = val[0]
+            const types = item.types
+            types.forEach(async type => {
+                const blob = await item.getType(type)
+                console.log(blob);
+                const fr = new FileReader()
+                fr.onload = (e) => {
+                    console.log(e.target.result);
+                }
+                fr.readAsText(blob)
+            })
+        }
+
+        // document.oncut = (e) => {
+        //     console.log('触发cyt剪切事件');
+        // }
+
+        //写入
+        btn.onclick = async () => {
+            const val = content.innerText
+            await navigator.clipboard.writeText(val)
+            alert('复制成功')
+        }
+
+
+        //读取(读取涉及隐私需要用户点击同意)
+        btnShow.onclick = async () => {
+            try {
+                const val = await navigator.clipboard.readText()
+                // console.log(val);
+                alert(val + '读取成功')
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //本地化存储
+        window.localStorage  //只有手动删除
+        window.sessionStorage //页面一旦关闭就删除
+        //存储内容:只能存储字符串
+        //增删查改
+        //setItem(key，value)增查 没有增加，有就更改
+        window.localStorage.setItem('age', '18')
+        window.localStorage.setItem('user', 'luochen')
+        //getItem(key)查
+        console.log(window.localStorage.getItem('user'));
+        //window.localStorage.length 获取长度
+        console.log(window.localStorage.length);
+
+        //window.localStorage.key(index) //返回对应下标的key
+        console.log(window.localStorage.key(0))
+        //获取当前所有localStorage.getItem
+        function getAllMsg() {
+            for (let i = 0; i < window.localStorage.length; i++) {
+                const key = localStorage.key(i)
+                console.log(localStorage.getItem(key));
+            }
+        }
+        getAllMsg()
+        //removeItem(key)删 clear()删除所有
+        window.localStorage.removeItem('user')
+
+
+
+    </script>
+</body>
+
+</html>

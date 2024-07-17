@@ -1,0 +1,49 @@
+{
+  "student": [
+    {
+      "name": "luochen",
+      "age": "23",
+      "phone": 15884328271,
+      "email": "1234567@qq.com",
+      "education": "大专",
+      "graduationschool": "前端大学",
+      "profession": "前端初级开发工程师",
+      "profile": "大家好真的好啊",
+      "id": "1"
+    },
+    {
+      "id": "b64b",
+      "name": "11",
+      "age": "111",
+      "phone": "11222",
+      "email": "11@qq.com",
+      "education": "本科",
+      "graduationschool": "11",
+      "profession": "11",
+      "profile": "11"
+    },
+    {
+      "id": "24e4",
+      "name": "55",
+      "age": "555",
+      "phone": "44",
+      "email": "44@44",
+      "education": "本科",
+      "graduationschool": "44",
+      "profession": "44",
+      "profile": "44"
+    }
+  ],
+  "classes": [
+    {
+      "id": "1",
+      "name": "学前班",
+      "description": "这是一个学习拼音和数字的班级"
+    },
+    {
+      "id": "2",
+      "name": "一年级",
+      "description": "这是一个学习加法减法班级"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+    <button class="start">开始</button>
+    <button class="pause">暂停</button>
+    <button class="cancel">取消</button>
+    <button class="finish">立即完成</button>
+    <button class="reverse">反向播放</button>
+    <input type="range" value="0" class="timeChange" min="0" max="3000" />
+    <script>
+        const box = document.querySelector('.box')
+        const start = document.querySelector('.start')
+        const pause = document.querySelector('.pause')
+        const cancel = document.querySelector('.cancel')
+        const finish = document.querySelector('.finish')
+        const reverse = document.querySelector('.reverse')
+        const range = document.querySelector('.timeChange')
+
+        //设置一个动画
+        const animateCtrl = box.animate([
+            { transform: 'translateX(0)' },
+            { backgroundColor: 'red' },
+            { borderRadius: '50%', transform: 'translateX(500px)', backgroundColor: 'green' }
+        ], {
+            duration: 3000,
+            fill: 'forwards'
+        })
+
+        //控制动画或者事件
+
+        //开始或者继续
+        start.onclick = () => {
+            animateCtrl.play()
+        }
+
+        //暂停
+        pause.onclick = () => {
+            animateCtrl.pause()
+        }
+
+        //取消
+        cancel.onclick = () => {
+            animateCtrl.cancel()
+        }
+
+        //立即完成
+        finish.onclick = () => {
+            animateCtrl.finish()
+        }
+
+        //反转
+        reverse.onclick = () => {
+            animateCtrl.reverse()
+        }
+
+        //获取或者设置动画的当前时间
+        range.onclick = (e) => {
+            animateCtrl.currentTime = e.target.value
+        }
+
+        //动画完成时触发
+        animateCtrl.onfinish = () => {
+            console.log('====================================');
+            console.log('动画完成了');
+            console.log('====================================');
+        }
+
+        //取消动画时触发
+        animateCtrl.oncancel = () => {
+            console.log('====================================');
+            console.log('动画取消了');
+            console.log('====================================');
+        }
+
+        //动画移除时被触发
+        animateCtrl.onremove = () => {
+            console.log('====================================');
+            console.log('动画被移除了');
+            console.log('====================================');
+        }
+    </script>
+</body>
+
+</html>

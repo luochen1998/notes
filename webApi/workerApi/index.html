@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**  Worker  必须同源环境下使用
+        *new Worker(aURL, options)
+        *   aURL   表示 worker 将执行的脚本的 URL。它必须遵守同源策略。 始终是 text/javascript
+        *   options
+        *       type:用以指定 worker 类型的 DOMString 值。该值可以是 classic 或 module. 如果未指定，将使用默认值 classic.
+        *       credentials：用以指定 worker 凭证的 DOMString 值。该值可以是* omit*,same-origin，或 include.。如果未指定，或者 type 是 classic，将使用默认值 omit (不要求凭证)
+        *       *name：*在 DedicatedWorkerGlobalScope 的情况下，用来表示 worker 的 scope 的一个 DOMString 值，主要用于调试目的。
+        */
+
+        const worker = new Worker('./assets/mission.js', {
+            type: 'module',
+            name: 'worker1'
+        })
+
+        //通知worker去做
+        worker.postMessage(10)
+        //回调的方式通知
+        worker.onmessage = (e) => {
+            console.log('收到内部worker返回的结果', e.data);
+        }
+    </script>
+</body>
+
+</html>

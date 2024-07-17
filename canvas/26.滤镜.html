@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /** 滤镜使用ctx.filter属性，设置一个或多个滤镜
+         *  ctx.filter='blur(10px)' 设置模糊度  值越大，模糊效果越明显。
+         *  ctx.filter='brightness(%)' 设置亮度 =1原样，<1变暗，>1变亮
+         *  ctx.filter='contrast(%)' 设置对比度 1原样，<1颜色接近，>1颜色鲜亮
+         *  ctx.filter='saturate(%)' 设置饱和度 1原样，<1颜色变灰，>1颜色鲜亮
+         *  ctx.filter='grayscale(%)' 设置饱和度 0原样，1变灰
+         *  ctx.filter='sepia(%)' 设置怀旧风格 0原样，1怀旧风格（深褐色）
+         *  ctx.filter='invert(%)' 设置颜色相反色 0原样，1取相反色  .5灰色
+         *  ctx.filter='opacity(%)' 设置透明度 （设置透明度通常使用使用rgba）
+         *  ctx.filter = 'hue-rotate(180deg)' 设置色调  转递角度
+         *  ctx.filter='drop-shadow(x,y,shadowBlur,color)' 设置阴影
+         *  ctx.filter = 'hue-rotate(180deg) contrast(.5)'  //使用多个滤镜(不能和阴影一起使用)
+         *  ctx.filter='url(svgFilterID)'  //使用svg(具体请先学习svg)
+         */
+
+        //设置模糊程度
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillText('设置模糊度', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'blur(10px)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 30, img.width, img.height)
+            }
+            ctx.beginPath()
+        })();
+
+        //设置亮度
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillText('设置亮度', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'brightness(.1)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 30, img.width, img.height)
+            }
+        })();
+
+        //设置对比度
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置对比度', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'contrast(1.5)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 40, img.width, img.height)
+            }
+        })();
+
+
+        //设置饱和度
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置饱和度', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'saturate(1.5)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 40, img.width, img.height)
+            }
+        })();
+
+        //设置色素盘
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置色素盘', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'grayscale(1)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 40, img.width, img.height)
+            }
+        })();
+
+        //设置怀旧风格
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置怀旧风格', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'sepia(.5)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 40, img.width, img.height)
+            }
+        })();
+
+
+        //设置相反颜色
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置相反色', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'invert(1)'
+            img.onload = () => {
+                ctx.drawImage(img, 0, 40, img.width, img.height)
+            }
+        })();
+
+        //设置阴影
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置阴影', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'drop-shadow(10 10 20px #000)'
+            img.onload = () => {
+                ctx.drawImage(img, 50, 50, 300, 300)
+            }
+        })();
+
+        //设置色调
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置色调', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'hue-rotate(360deg)'
+            img.onload = () => {
+                ctx.drawImage(img, 50, 50, 300, 300)
+            }
+        })();
+
+        //使用多个滤镜
+        (() => {
+            const ctx = createCanvas()
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.font = '700 italic 20px sans-serif'
+            ctx.fillStyle = '#f00'
+            ctx.fillText('设置多个滤镜', 200, 20)
+            ctx.beginPath()
+            const img = new Image()
+            img.src = './image/04.png'
+            ctx.filter = 'hue-rotate(180deg) contrast(.5) sepia(.5)'
+            img.onload = () => {
+                ctx.drawImage(img, 50, 50, 300, 300)
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f9f9f9;
+            cursor: grab;
+        }
+
+        li.dragging {
+            opacity: .7;
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li draggable="true">item 1</li>
+        <li draggable="true">item 2</li>
+        <li draggable="true">item 3</li>
+        <li draggable="true">item 4</li>
+        <li draggable="true">item 5</li>
+    </ul>
+    <script>
+        const ul = document.querySelector('ul')
+        let targetEl = null
+        // ul.addEventListener('click', (e) => {
+        //     console.log('====================================');
+        //     console.log(e.clientY);
+        //     console.log('====================================');
+        // })
+        ul.addEventListener('dragstart', function (e) {
+            e.target.classList.add('dragging')
+            targetEl = e.target
+        })
+        ul.addEventListener('dragend', function (e) {
+            e.target.classList.remove('dragging')
+            targetEl = null
+        })
+        ul.addEventListener('dragover', (e) => {
+            e.dataTransfer.dropEffect = 'move'
+            e.preventDefault()
+            if (targetEl !== e.target && e.target.tagName === 'LI') {
+                const targetMsg = e.target.getBoundingClientRect() //回一个 DOMRect 对象，其提供了元素的大小及其相对于视口的位置
+                //e.clientY 鼠标相对浏览器y的距离
+                //获取鼠标在当前元素位置的距离
+                const mouseY = e.clientY - targetMsg.top
+                const targetHeight = targetMsg.height
+                if (mouseY < targetHeight / 2) {
+                    ul.insertBefore(targetEl, e.target) //插入当前元素之前
+                } else {
+                    ul.insertBefore(targetEl, e.target.nextSibling)
+                }
+
+            }
+
+        })
+        ul.addEventListener('drop', (e) => {
+
+            e.preventDefault()
+        })
+    </script>
+</body>
+
+</html>

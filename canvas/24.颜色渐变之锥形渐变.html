@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /* 锥形渐变
+        *   使用 ctx.createConicGradient(angle,x,y)方法创建一个锥形渐变对象
+        *       x,y,表示圆心点
+        *       angle表示起始角度，默认0度是三点钟的方向，angle=90度从六点钟方向开始旋转
+        *       注意：  angle传参时使用的是角度对应的弧度值
+        *
+        */
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createConicGradient(Math.PI / 2, 200, 200)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(0.25, '#ff0')
+            gradient.addColorStop(0.5, '#0f0')
+            gradient.addColorStop(0.75, '#0ff')
+            gradient.addColorStop(1, '#f0f')
+            ctx.fillStyle = gradient
+            ctx.arc(200, 200, 200, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.stroke()
+        })();
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createConicGradient(Math.PI / 2, 200, 200)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(0.25, '#ff0')
+            gradient.addColorStop(0.5, '#0f0')
+            gradient.addColorStop(0.75, '#0ff')
+            gradient.addColorStop(1, '#f0f')
+            ctx.fillStyle = gradient
+            ctx.arc(200, 200, 100, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.beginPath()
+            ctx.arc(200, 200, 75, 0, Math.PI * 2)
+            ctx.fillStyle = '#fff'
+            ctx.fill()
+            // ctx.stroke()
+        })()
+    </script>
+</body>
+
+</html>

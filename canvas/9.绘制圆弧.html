@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        /*  1.ctx.arc(x,y,r,startAngle,endAngle,dir)
+        *   x,y原点坐标
+        *   r  半径
+        *   startAngle 起始绘制的角度，默认圆点x轴右侧半径位置为绘制的起始点（0度点）角度方向是顺时针，
+        *   endAngle 结束点的角度
+        *   dir Boolean  false顺时针方向('默认')   true逆时针方向
+        *   **设计弧度时，用的是角度。传递参数时，传递的是弧度**
+        *   1角度=Math.PI/180(弧度)  360(角度)=Math.PI*2
+        */
+
+        //逆时针方向绘制半圆
+
+        const ctx1 = createCanvas()
+        ctx1.arc(100, 100, 100, 0, Math.PI, true)
+        ctx1.lineWidth = 2
+        ctx1.strokeStyle = '#00f'
+        ctx1.stroke()
+
+        //顺时针绘制圆形
+        ctx1.lineWidth = 4
+        ctx1.strokeStyle = '#f00'
+        ctx1.fillStyle = '#00f'
+        ctx1.beginPath()
+        ctx1.arc(200, 200, 50, 0, Math.PI * 2)
+        ctx1.fill()
+        ctx1.stroke()
+
+
+        /** 
+        *2.arcTo(x1,y1,x2,y2,r)  由三个控制点实现圆弧的绘制
+        *  moveTo或上一次图形结束的点为第一个点
+        *  x1 y1为第一个点
+        *  x1 y1为第一个点 
+        *  按照1，2，3，顺序进行连线，聊条线会形成一个夹角
+        *  根据r绘制圆弧，保证两个线条相切
+        */
+        const ctx2 = createCanvas()
+        ctx2.moveTo(100, 100)
+        ctx2.lineTo(100, 300)
+        ctx2.lineTo(300, 300)
+        ctx2.stroke()
+
+        ctx2.strokeStyle = "#f00"
+        ctx2.beginPath()
+        ctx2.moveTo(100, 200)
+        ctx2.arcTo(100, 300, 300, 300, 200)
+        ctx2.stroke()
+
+        ctx2.beginPath()
+        ctx2.arc(200, 200, 100, 0, Math.PI * 2)
+        ctx2.strokeStyle='#0f0'
+        ctx2.stroke()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /** 
+        * new Blob(blobParts, options)
+        *   1.blobParts（可选）
+        *   一个可迭代对象，比如 Array，包含 ArrayBuffer、TypedArray、DataView、Blob、字符串或者任意这些元素的混合
+        *   2.options 可选
+        *   将会被存储到 blob 中的数据的 MIME 类型。默认值是空字符（""）
+        *   3.实例方法
+        *       blob.arrayBuffer()一个 promise，会兑现为一个包含 blob 数据（以二进制形式）的 ArrayBuffer
+        *       blob.slice(start, end, contentType) 返回一个截取后的blob
+        *           start 可选 
+        *           end   可选
+        *           contentType  可选
+        *               截取新的blob后可以重新设置
+        *       blob.text()返回一个promise 读取blob内容
+        *       blob.stream()返回一个 ReadableStream 对象 详情见mdn
+        *           
+        */
+        const blob = new Blob(['I am a student'], { type: 'text/plain' })
+        console.log(blob)
+        const firstBlob = blob.slice(0, 4)
+        const lastBlob = blob.slice(4)
+
+        console.log(blob.slice(0,4))
+        console.log(blob.text().then((val) => { console.log(val); }))
+        Promise.all([firstBlob.text(), lastBlob.text()]).then((val) => {
+            console.log(val);
+        })
+
+        
+    </script>
+</body>
+
+</html>

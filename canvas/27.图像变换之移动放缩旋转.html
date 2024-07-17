@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            margin: 0 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /**图像变换 就是对图形进行一个移动，旋转，缩放，矩阵斜切
+        *   1.图像的移动
+        *       移动不是动画，只是视觉位置上的变化
+        *       ctx.translate(x,y) 方法实现图形位置的移动
+        *       这里实际移动的并不是指定的图形，而是坐标系 
+        *       对之前已经绘制过的图形不会产生影响
+        *   2.图像的放缩
+        *       本质是对坐标系横纵坐标的放缩
+        *       使用ctx.scale(xRatio,yRatio)方法设置横纵坐标的缩放比例
+        *               0<ratio< 1缩小
+        *               1<ratio放大
+        *               负数  坐标系方向发生反转
+        *   3.图像的旋转
+        *       使用ctx.rotate(angle)方向设置顺时针旋转的角度
+        *       对之前已经绘制过的图形不会产生影响
+        *       逻辑上转递的是角度，但是语法上要求传递弧度
+        */
+
+        //图像的移动
+        (() => {
+            const ctx = createCanvas()
+            ctx.fillRect(0, 0, 200, 200)
+            ctx.beginPath()
+            ctx.translate(150, 150)  //对之前已经绘制过的图形不会产生影响
+            ctx.fillRect(50, 50, 200, 200)
+        })();
+        (() => {
+            const ctx = createCanvas()
+            ctx.translate(50, 50)
+            ctx.moveTo(-400, 0)
+            ctx.lineTo(400, 0)
+            ctx.moveTo(0, -400)
+            ctx.lineTo(0, 400)
+            ctx.stroke()
+            ctx.beginPath()
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            for (let x = -400; x <= 400; x += 10) {
+                ctx.beginPath()
+                ctx.moveTo(x, -5)
+                ctx.lineTo(x, 5)
+                ctx.stroke()
+            }
+            for (let y = -400; y <= 400; y += 10) {
+                ctx.beginPath()
+                ctx.moveTo(-5, y)
+                ctx.lineTo(5, y)
+                ctx.stroke()
+            }
+            ctx.beginPath()
+            ctx.fillRect(100, 100, 100, 100)
+        })();
+
+        //图像的缩放
+        (() => {
+            const ctx = createCanvas()
+            ctx.translate(200, 200)
+            ctx.scale(2, 1) //x放大两倍
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.beginPath()
+            ctx.fillRect(0, 0, 50, 50)
+            for (let x = -400; x <= 400; x += 10) {
+                ctx.beginPath()
+                ctx.moveTo(x, -5)
+                ctx.lineTo(x, 5)
+                ctx.stroke()
+            }
+            for (let y = -400; y <= 400; y += 10) {
+                ctx.beginPath()
+                ctx.moveTo(-5, y)
+                ctx.lineTo(5, y)
+                ctx.stroke()
+            }
+            ctx.beginPath()
+
+        })();
+
+        //图像的缩放实现数学坐标系
+        (() => {
+            const ctx = createCanvas()
+            ctx.translate(0, 400)
+            ctx.scale(1, -1)  //改变y轴的坐标系方向
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.beginPath()
+            ctx.moveTo(0, 0)
+            ctx.lineTo(100, 100)
+            ctx.stroke()
+            for (let x = -400; x <= 400; x += 10) {
+                ctx.beginPath()
+                ctx.moveTo(x, -5)
+                ctx.lineTo(x, 5)
+                ctx.stroke()
+            }
+            for (let y = -400; y <= 400; y += 10) {
+                ctx.beginPath()
+                ctx.moveTo(-5, y)
+                ctx.lineTo(5, y)
+                ctx.stroke()
+            }
+            ctx.beginPath()
+
+        })();
+
+        //图像的旋转
+        (() => {
+            const ctx = createCanvas()
+            ctx.translate(200, 200)
+            ctx.rotate(45 * Math.PI / 180)  //旋转45度
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.fillRect(0, 0, 100, 100)
+            for (let x = -400; x <= 400; x += 10) {
+                ctx.beginPath()
+                ctx.moveTo(x, -5)
+                ctx.lineTo(x, 5)
+                ctx.stroke()
+                ctx.beginPath()
+                ctx.moveTo(-5, x)
+                ctx.lineTo(5, x)
+                ctx.stroke()
+            }
+
+        })();
+
+        //图像的旋转
+        (() => {
+            const ctx = createCanvas()
+            ctx.setLineDash([10])
+            ctx.strokeStyle = '#f00'
+            ctx.strokeRect(150, 150, 100, 100)
+            ctx.beginPath()
+            ctx.translate(200, 200)
+            ctx.rotate(45 * Math.PI / 180)  //旋转45度
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.fillRect(-50, -50, 100, 100)
+
+        })();
+
+        
+        //图像的旋转（先旋转在平移） 先旋转后  在平移是往旋转的那个方向平移
+        (() => {
+            const ctx = createCanvas()
+            ctx.setLineDash([10])
+            ctx.strokeStyle = '#f00'
+            ctx.strokeRect(150, 150, 100, 100)
+            ctx.beginPath()
+          
+            ctx.rotate(45 * Math.PI / 180)  //旋转45度
+            ctx.translate(400, 100)
+            ctx.arc(0, 0, 5, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.fillRect(0, 0, 100, 100)
+            for (let x = -400; x <= 400; x += 10) {
+                ctx.beginPath()
+                ctx.moveTo(x, -5)
+                ctx.lineTo(x, 5)
+                ctx.stroke()
+                ctx.beginPath()
+                ctx.moveTo(-5, x)
+                ctx.lineTo(5, x)
+                ctx.stroke()
+            }
+
+        })();
+    </script>
+</body>
+
+</html>

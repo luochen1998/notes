@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+
+        //1.ctx,lineWidth  设置线条粗细
+
+        
+        /*2.ctx.lineCap='val'   设置线条端点样式锚点（螺帽）
+        * butt 平的('默认没有任何额外效果')
+        * round 圆的
+        * square 平的 (端点处额外增加了矩形，视觉效果上直线变长了)
+        */
+        const ctx1 = createCanvas()
+        ctx1.beginPath()
+        ctx1.lineWidth = 10
+        ctx1.strokeStyle = '#ff0'
+        ctx1.moveTo(10, 20)
+        ctx1.lineTo(30, 50)
+        ctx1.lineTo(50, 20)
+        ctx1.lineCap = 'butt'  //平的
+        ctx1.stroke()
+
+        ctx1.beginPath()
+        ctx1.lineWidth = 8
+        ctx1.strokeStyle = '#f0f'
+        ctx1.moveTo(10, 60)
+        ctx1.lineTo(30, 90)
+        ctx1.lineTo(50, 60)
+        ctx1.lineCap = 'round' //圆的
+        ctx1.stroke()
+
+        ctx1.beginPath()
+        ctx1.lineWidth = 6
+        ctx1.strokeStyle = '#0ff'
+        ctx1.moveTo(10, 100)
+        ctx1.lineTo(30, 130)
+        ctx1.lineTo(50, 100)
+        ctx1.lineCap = 'square' //平的
+        ctx1.stroke()
+
+        /* 3.ctx.lineJoin='val' 设置折线连接处的样式
+        * miter 尖的 （默认）
+        * round 圆的
+        * bevel 平的('斜面')
+        */
+
+        const ctx2 = createCanvas()
+        ctx2.beginPath()
+        ctx2.lineWidth = 10
+        ctx2.strokeStyle = '#f0f'
+        ctx2.moveTo(10, 20)
+        ctx2.lineTo(30, 50)
+        ctx2.lineTo(50, 20)
+        ctx2.lineJoin = 'miter'  //尖的
+        ctx2.stroke()
+
+        ctx2.beginPath()
+        ctx2.lineWidth = 8
+        ctx2.strokeStyle = '#ff0'
+        ctx2.moveTo(10, 60)
+        ctx2.lineTo(30, 90)
+        ctx2.lineTo(50, 60)
+        ctx2.lineTo(70, 90)
+        ctx2.lineJoin = 'round'  //圆的
+        ctx2.stroke()
+
+        ctx2.beginPath()
+        ctx2.lineWidth = 6
+        ctx2.strokeStyle = '#0ff'
+        ctx2.moveTo(10, 100)
+        ctx2.lineTo(30, 130)
+        ctx2.lineTo(50, 100)
+        ctx2.lineTo(70, 130)
+        ctx2.lineJoin = 'bevel'  //平的('斜面')
+        ctx2.stroke()
+
+        /* 4.ctx.miterlimit=number 设置折线连接处形成的尖限制
+        *  当线条比较粗，折线形成的夹角比较小的时候，lineJoin为miter属性时形成的尖会比较长
+        *  可以利用该属性来控制尖的长度
+        */
+
+        const ctx3 = createCanvas()
+        ctx3.beginPath()
+        ctx3.moveTo(20, 100)
+        ctx3.lineTo(50, 150)
+        ctx3.lineTo(80, 100)
+        ctx3.lineWidth = 50
+        ctx3.strokeStyle = '#00f'
+        ctx3.lineJoin = 'miter' //设置折线连接处的样式
+        ctx3.miterLimit = 1  //设置折线尖的长度
+        ctx3.stroke()
+        ctx3.beginPath()
+        ctx3.lineWidth = 1
+        ctx3.moveTo(0, 150)
+        ctx3.lineTo(100, 150)
+        ctx3.stroke()
+
+
+        /*  5.ctx.setLineDash(array) ，设置虚线
+        *  [1] 表示线段长度和留白长度都是1
+        *  [1,2]表示每段线条长度为1，留白长度为2
+        *  [1,2,3,...]大于三个或者等于三个参数会按照数组数列无限延续下去
+        *  线段1 留白2  线段3  留白1。。。。
+        */
+        const ctx4 = createCanvas()
+        ctx4.lineWidth = 3
+        ctx4.strokeStyle = '#f0f'
+        ctx4.setLineDash([5])
+        ctx4.moveTo(0, 20)
+        ctx4.lineTo(200, 20)
+        ctx4.stroke()
+
+        ctx4.beginPath()
+        ctx4.lineWidth = 4
+        ctx4.strokeStyle = '#00f'
+        ctx4.setLineDash([10, 5])
+        ctx4.moveTo(0, 40)
+        ctx4.lineTo(200, 40)
+        ctx4.stroke()
+
+        ctx4.beginPath()
+        ctx4.lineWidth = 5
+        ctx4.strokeStyle = '#f00'
+        ctx4.setLineDash([10, 5, 8])
+        ctx4.moveTo(0, 70)
+        ctx4.lineTo(200, 70)
+        ctx4.stroke()
+
+
+        /* 5.ctx.lineDAshOffset，设置虚线起始位置偏移量 和实现动画效果
+        * 正数向左偏移 ，复数向右便宜，总长度保持不变
+        */
+
+        const ctx5 = createCanvas()
+        ctx5.moveTo(20, 10)
+        ctx5.lineTo(20, 80)
+        ctx5.stroke()
+
+        ctx5.beginPath()
+        ctx5.lineWidth = 5
+        ctx5.strokeStyle = '#f0f'
+        ctx5.lineDashOffset = 20
+        ctx5.setLineDash([20])
+        ctx5.moveTo(20, 20)
+        ctx5.lineTo(220, 20)
+        ctx5.stroke()
+
+
+        ctx5.beginPath()
+        ctx5.strokeStyle = '#ff0'
+        ctx5.lineDashOffset = -30
+        ctx5.setLineDash([20])
+        ctx5.moveTo(20, 40)
+        ctx5.lineTo(220, 40)
+        ctx5.stroke()
+
+        //动画效果
+        ctx5.beginPath()
+        ctx5.strokeStyle = '#0ff'
+        ctx5.lineDashOffset = 190
+        ctx5.setLineDash([200])
+        ctx5.moveTo(20, 60)
+        ctx5.lineTo(220, 60)
+        ctx5.stroke()
+        function move() {  //注意此种写法之前的绘制路径还存在，也就是不停的绘制新的，但是旧的还存在
+            ctx5.stroke()
+            ctx5.lineDashOffset -= 1
+            if (ctx5.lineDashOffset > 0) {
+                requestAnimationFrame(move)  //js动画api
+            }
+        }
+        requestAnimationFrame(move)
+    </script>
+</body>
+
+</html>

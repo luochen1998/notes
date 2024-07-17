@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #000;
+        }
+
+        .box {
+            background-color: red;
+            color: #fff;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">目标区域</div>
+    <!--draggable 标识元素是否允许使用浏览器原生行为或 HTML 拖放操作 API 拖动-->
+    <div class="box" draggable="true">拖拽元素</div>
+    <script>
+        const box = document.querySelector('.box')
+        const content = document.querySelector('.content')
+        content.addEventListener('dragover', (e) => {
+            e.preventDefault()
+        })
+        content.addEventListener('drop', (e) => {
+            e.preventDefault()
+            content.appendChild(box)
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script src="../reactjs/react.development.js"></script>
+  <script src="../reactjs/react-dom.development.js"></script>
+  <script src="../reactjs/babel.min.js"></script>
+  <!-- 引入babel -->
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      //设置js代码被babel处理
+      //   const button = React.createElement("button", {}, "我是按钮")
+      const name = "猪八戒"
+      let isButton = true
+      const fn = () => "孙悟空"
+      let Btn
+      if (isButton) {
+        Btn = (
+          <button
+            onClick={() => {
+              console.log("执行")
+              isButton = !isButton
+            }}
+          >
+            我是按钮
+          </button>
+        )
+      } else {
+        Btn = (
+          <button
+            onClick={() => {
+              console.log("执行")
+              isButton = !isButton
+            }}
+          >
+            我不是按钮
+          </button>
+        )
+      }
+      const div = (
+        <div className="btn" style={{ backgroundColor: "red" }}>
+          我是一个div
+          {Btn}
+          {name}
+          {fn()}
+          {null}
+          {1 + 1}
+        </div>
+      )
+
+      const root = ReactDOM.createRoot(document.getElementById("root"))
+      root.render(div)
+    </script>
+  </body>
+</html>

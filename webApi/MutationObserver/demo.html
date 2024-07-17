@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>商品</th>
+                <th>数量</th>
+                <th>单价</th>
+                <th>总价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>商品1</td>
+                <td contenteditable="true">2</td>
+                <td contenteditable="true">5</td>
+                <td>10</td>
+            </tr>
+        </tbody>
+    </table>
+    <button>添加商品</button>
+    <script>
+        const table = document.querySelector('table')
+        const btn = document.querySelector('button')
+        let goods = 1
+        btn.onclick = () => {
+            const tr = document.createElement('tr')
+            tr.innerHTML = ` <td>商品${++goods}</td>
+                <td contenteditable="true">0</td>
+                <td contenteditable="true">0</td>
+                <td>0</td>`
+            table.tBodies[0].appendChild(tr)
+        }
+
+        const mob = new MutationObserver((mutations) => {
+            // console.log('元素发生了变化');
+            //是谁变化了
+            mutations.forEach(mutation => {
+                console.log(mutation)
+                console.log(mutation.target);  //注意 ：打印默认返回mutation.target.data
+                if (mutation.target.data) {
+                    const target = mutation.target
+                    const trParent = target.parentElement.parentElement
+                    const result = trParent.children[1].innerText * trParent.children[2].innerText
+                    trParent.children[3].innerText = result
+                }
+
+            })
+
+        })
+        mob.observe(table, {
+            subtree: true,
+            characterData: true
+        })
+    </script>
+</body>
+
+</html>

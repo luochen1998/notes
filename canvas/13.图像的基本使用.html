@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        const createImage = (src = './image/01.png') => {
+            const image = new Image()
+            image.src = src
+            return image
+
+        }
+
+        /**
+         * 基本使用
+         * image对象  对应img标签
+         *      可以是图片路径
+         *      可以是图片的base64表示 
+         * video对象
+         * canvas（本身就是一张图片）画布
+         */
+
+        /**
+        * 使用ctx.drawImage()方法引入图片
+        * 1.第一种写法 ctx.drawImage(imgSource,x,y)
+        *   x,y在画布中放置的起始坐标位置
+        *   会按照图像原大小展示
+        * 
+        * 2.第二种写法 ctx.drawImage(imgSource,x,y，width,height)
+        *   width和height图像展示的大小（缩放处理）
+        * 
+        * 3.第三种写法 ctx.drawImage(imgSource,x1,y1,w1,h1,x2,y2,w2,h2)
+        *   x1,y1,w1,h1区域是图像的截图区域。此时基于图像的坐标系
+        *   x2,y2,w2,h2区域是画布的展示区域
+        */
+
+        //第二种用法
+        const ctx1 = createCanvas()
+        const image1 = createImage()
+        image1.onload = () => {
+            ctx1.drawImage(image1, 56, 139, 288, 162)
+        }
+
+        //第三种用法
+        const ctx2 = createCanvas()
+        const image2 = createImage()
+        image2.onload = () => {
+            ctx2.drawImage(image2, 58, 0, 180, 162, 100, 100, 200, 200)
+        }
+    </script>
+</body>
+
+</html>

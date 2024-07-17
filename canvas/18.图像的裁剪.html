@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+ </head>
+ <body>
+  <script>
+   const createCanvas = (width = 400, height = 400) => {
+    const canvas = document.createElement("canvas");
+    document.body.append(canvas);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.border = "1px solid";
+    const ctx = canvas.getContext("2d");
+    return ctx;
+   };
+
+   /*
+    * 图像的裁剪
+    *     使用ctx.clip()方法设置裁剪路径，接下来绘制的图形只会在裁剪路径中展示。(且对之前绘制的图形没有影响)
+    *     clip方法只表示裁剪，按照什么路径裁剪？ 按照clip上面绘制的路径进行裁剪
+    *
+    *     clip方法还可以传递参数（rule,path2d）
+    *       rule:
+    *         nonzero:默认值 非零环绕路径
+    *         evenodd:奇偶环绕路径
+    *     在绘制裁剪路径的时候，有些路径会被重复绘制
+    *        非零环绕路径： 顺时针绘制经过路径，数量+1，逆时针经过绘制路径，数量-1，区域最终经过的数量为0，就不裁剪
+    *        奇偶环绕路径: 不分顺时针和逆时针，只要绘制路径经过区域，数量+1  ,最终奇数裁切，偶数不裁切
+    *       
+    *      path2d:...
+    */      
+
+   //裁剪区域
+   (() => {
+    const ctx1 = createCanvas();
+    ctx1.fillStyle = "red";
+    ctx1.beginPath();
+    ctx1.fillRect(100, 100, 200, 200);
+    ctx1.beginPath();
+    ctx1.fillStyle = "#000";
+    ctx1.moveTo(100, 200);
+    ctx1.lineTo(200, 300);
+    ctx1.lineTo(300, 200);
+    ctx1.lineTo(200, 100);
+    ctx1.closePath();
+    //ctx1.stroke();
+    ctx1.clip(); //裁剪区域
+    ctx1.beginPath();
+    ctx1.fillStyle = "#00f";
+    ctx1.fillRect(100, 100, 200, 200);
+   })();
+
+   //裁剪图像
+   (() => {
+    const ctx2 = createCanvas();
+    const img = new Image();
+    img.src = "./image/04.png";
+    img.onload = () => {
+     ctx2.arc(200, 200, 100, 0, Math.PI * 2);
+     ctx2.clip('nonzero');
+     //后面无论画多少图都只会在裁剪区域
+     ctx2.drawImage(img, 200 - img.width / 2, 200 - img.height / 2);
+    };
+   })();
+
+   //非零环绕路径
+   (() => {
+    const ctx = createCanvas();
+    ctx.strokeRect(100, 100, 200, 200);
+    const img = new Image();
+    img.src = "./image/04.png";
+    img.onload = () => {
+     ctx.beginPath();
+     ctx.arc(200, 200, 100, 0, Math.PI * 2, false); //顺时针
+     ctx.arc(200, 200, 80, 0, Math.PI * 2, true); //逆时针
+     ctx.clip();
+     ctx.beginPath();
+     // ctx.fillRect(100, 100, 200, 200);
+     ctx.drawImage(img, 200 - img.width / 2, 200 - img.height / 2);
+    };
+   })();
+
+   //奇偶环绕路径（只和经过几次有关） : 奇数裁切，偶数不裁切
+   (() => {
+    const ctx = createCanvas();
+    ctx.strokeRect(100, 100, 200, 200);
+    const img = new Image();
+    img.src = "./image/04.png";
+    img.onload = () => {
+     ctx.beginPath();
+     ctx.arc(200, 200, 100, 0, Math.PI * 2, false); //顺时针
+     ctx.arc(200, 200, 80, 0, Math.PI * 2, false); //顺时针
+     ctx.clip('evenodd');
+     ctx.beginPath();
+     // ctx.fillRect(100, 100, 200, 200);
+     ctx.drawImage(img, 200 - img.width / 2, 200 - img.height / 2);
+    };
+   })();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            return canvas.getContext("2d")
+
+        }
+        /** 
+        *   使用ctx.save()和ctx.restore()两个方法实现绘制状态的存储和重置。
+        *       绘制状态：
+        *           描边样式，填充样式
+        *           线条样式
+        *           文本样式
+        *           剪裁（实际是画布）
+        *           合成
+        *           图像变换
+        *   每次调用ctx.save()方法，都会将之前设置的状态存储起来（存入栈中）
+        *   可以调用多次save方法，将多个状态按照顺序存入栈中
+        *   每次调用ctx,restore()方法，会重置状态。所谓的重置状态，就是将当前状态从栈中移除（删除），恢复到上一次的状态。
+        *   save和restore不是必须的，可以手动按照逻辑。恢复上一次的状态。
+        * 
+        *   //canvas绘制习惯
+        *   最好每设置一组图形的时候就添加一个绘制路径和存储状态
+        */
+
+        
+        (() => {
+            const ctx = createCanvas()
+            ctx.save()
+            ctx.translate(100, 100)
+            ctx.fillStyle = '#f00'
+            ctx.beginPath()
+            ctx.fillRect(0, 0, 100, 100)
+
+            ctx.save()
+            ctx.translate(100, 100)
+            ctx.fillStyle = '#0f0'
+            ctx.beginPath()
+            ctx.fillRect(0, 0, 100, 100)
+
+            ctx.restore()
+            ctx.beginPath()
+            ctx.fillRect(-100, -100, 100, 100)
+        })();
+    </script>
+</body>
+
+</html>

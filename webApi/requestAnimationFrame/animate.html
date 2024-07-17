@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box,
+        .box1 {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            position: relative;
+            left: 0;
+            color: #fff;
+        }
+
+        .box {
+            background-color: #000;
+        }
+
+        .box1 {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">interval</div>
+    <div class="box1">frame</div>
+    <script>
+        const box = document.querySelector('.box')
+        const box1 = document.querySelector('.box1')
+        let d = 0
+        let rd = 0
+        //使用定时器完成动画
+        const intervalId = setInterval(() => {
+            d++
+            box.style.left = d + 'px'
+            if (d >= 300) {
+                clearInterval(intervalId)
+            }
+        }, 1000/60) //游览器16.7刷新一次
+
+        //使用requestAnimationFrame完成动画
+        function move(time) {
+            rd++
+            // console.log(time);
+            box1.style.left = rd + 'px'
+            if (rd >= 300) {
+                cancelAnimationFrame(animateId) //清除动画id类似于定时id
+                return
+            }
+            requestAnimationFrame(move)
+        }
+        const animateId = requestAnimationFrame(move)
+    </script>
+</body>
+
+</html>

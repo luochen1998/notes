@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+ </head>
+ <body>
+  <script>
+   const createCanvas = (width = 400, height = 400) => {
+    const canvas = document.createElement("canvas");
+    document.body.append(canvas);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.border = "1px solid";
+    const ctx = canvas.getContext("2d");
+    return ctx;
+   };
+   /**
+    * 图像的处理 imageData对象，包含了某一个区域的像素值  （可提高饱和度和亮度等功能）有相应的公式
+    * imageData.width
+    * imageData.height
+    * imageData.data array 包含区域内所有的像数值（rgba值）
+    * array 是一个一维数组，每四个位置表示一个像素值
+    * （x,y）这个像素的值为
+    *   (imageData.width * 4）*x+y*4+0/1/2/3   ps:这里应该交换xy的位置
+    *   (y * imageData.width + x) * 4
+    * 使用ctx.getImageData(x,y,width,height)获得画布中指定区域的imageData对象（像素值）
+    *     在获得imageData对象后，就可以通过其获得每一个像素值，也可以设置每一个像素的值
+    *     设置后不会默认生效，需要重新设置画布的imageData
+    *
+    * 使用ctx.putImageData(imagedata,x,y)
+    *     imageData：一个 ImageData 对象，它包含了要绘制到画布上的图像数据。
+          x：图像数据在画布上放置的左上角的 x 坐标。
+          y：图像数据在画布上放置的左上角的 y 坐标。
+
+          //有点出入请看mdn
+          dirtyX（可选）：在源 imageData 中要绘制的矩形区域的左上角的 x 坐标。
+          dirtyY（可选）：在源 imageData 中要绘制的矩形区域的左上角的 y 坐标。
+          dirtyWidth（可选）：在源 imageData 中要绘制的矩形区域的宽度。
+          dirtyHeight（可选）：在源 imageData 中要绘制的矩形区域的高度。
+    */
+
+   //彩色图片变灰白方法 取平均值或者以其他（比如红色）通道置灰越红的地方就越暗
+   (function () {
+    const ctx1 = createCanvas();
+    const img = new Image();
+    img.src = "./image/01.png";
+    img.onload = () => {
+     ctx1.drawImage(img, 0, 0);
+     const imageData = ctx1.getImageData(0, 0, 400, 400);
+     console.log(imageData);
+     console.log((imageData.width * 2 + 2) * 4); //获得xy具体位置的像素值
+     for (let i = 0; i < imageData.data.length; i += 4) {
+      const r = imageData.data[i];
+      const g = imageData.data[i + 1];
+      const b = imageData.data[i + 2];
+      const a = imageData.data[i + 3];
+      const avg = (r + g + b) / 3; //取平均值
+      imageData.data[i] = avg;
+      imageData.data[i + 1] = avg;
+      imageData.data[i + 2] = avg;
+      //imageData.data[i] = r; //通过红色通道
+      //imageData.data[i + 1] = r;
+      //imageData.data[i + 2] = r;
+     }
+     ctx1.putImageData(imageData, 0, 200);
+    };
+   })();
+
+   //相反色
+   (() => {
+    const ctx1 = createCanvas();
+    const img = new Image();
+    img.src = "./image/01.png";
+    img.onload = () => {
+     ctx1.drawImage(img, 0, 0);
+     const imageData = ctx1.getImageData(0, 0, 400, 400);
+     console.log(imageData);
+     console.log((imageData.width * 2 + 2) * 4); //获得xy具体位置的像素值
+     for (let i = 0; i < imageData.data.length; i += 4) {
+      const r = imageData.data[i];
+      const g = imageData.data[i + 1];
+      const b = imageData.data[i + 2];
+      const a = imageData.data[i + 3];
+      imageData.data[i] = 255 - r; //红
+      imageData.data[i + 1] = 255 - g; //绿
+      imageData.data[i + 2] = 255 - b; //蓝
+     }
+     ctx1.putImageData(imageData, 0, 200);
+    };
+   })();
+
+   //局部修改
+   (() => {
+    const ctx1 = createCanvas();
+    const img = new Image();
+    img.src = "./image/01.png";
+    img.onload = () => {
+     ctx1.drawImage(img, 0, 0);
+     const imageData = ctx1.getImageData(0, 0, 400, 400);
+     console.log(imageData);
+     console.log((imageData.width * 2 + 2) * 4); //获得xy具体位置的像素值
+     for (let i = 0; i < imageData.data.length; i += 4) {
+      const r = imageData.data[i];
+      const g = imageData.data[i + 1];
+      const b = imageData.data[i + 2];
+      const a = imageData.data[i + 3];
+      if (r - g > 30) {
+       imageData.data[i] = g;
+       imageData.data[i + 1] = r;
+      }
+     }
+     ctx1.putImageData(imageData, 0, 200);
+    };
+   })();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <video src="./image/01.mp4" width="400" height="400" controls muted></video>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+        const createImage = (src = './image/02.png') => {
+            const image = new Image()
+            image.src = src
+            return image
+
+        }
+        //视频图像
+        const ctx2 = createCanvas()
+        const video = document.querySelector('video')
+        video.addEventListener('play', () => {
+            draw()
+        })
+        ctx2.arc(200, 200, 150, 0, Math.PI * 2)
+        // ctx2.filter="blur(5px)"   //设置模糊度
+        //ctx2.filter="invert(.8)"  //设置滤镜
+        ctx2.clip()  //对话的圆进行裁剪后 只会在这个裁切范围播放
+        const draw = () => {
+            ctx2.clearRect(0, 0, 400, 400)
+            ctx2.drawImage(video, 0, 0, 400, 400)
+            // ctx2.drawImage(video, 200, 300, 200, 100)  //实现左下角小窗口播放
+            requestAnimationFrame(draw)
+        }
+
+
+        //图像动画
+        const ctx1 = createCanvas()
+        const img1 = createImage()
+        let index = 0
+        let width = 0
+        img1.onload = () => {
+            setInterval(() => {
+                ctx1.clearRect(0, 0, 400, 400)
+                ctx1.drawImage(img1, 94 * index, 0, 94, img1.height, width * 10, 100, 94, img1.height)
+                index++
+                width++
+                if (index >= 5) index = 0
+                if (width >= 40) width = 0
+            }, 100);
+
+        }
+
+
+
+    </script>
+</body>
+
+</html>

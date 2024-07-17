@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /*颜色渐变-线性渐变
+        * 使用ctx.createLinearGradient(x1,y1,x1,y1)方法创建一个线性渐变的对象canvasGradient
+        *   x0，y0和x1,y1是两个点，会按照两点的连线方向渐变
+        *   注意：渐变中的两个点是基于坐标系的(画布)。最终在图形中显现的渐变效果可能与预期的设置不同
+        * 使用gradient.addColorStop(%,color)方法设置渐变过程中每一部分的渐变颜色。
+        * 设置ctx.fillStyle=gradient或者ctx.strokeStyle=gradient
+        *   注意：如果渐变范围比图形范围小，图形范围的两侧就是渐变两侧的颜色
+        */
+
+        //描边线性渐变
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createLinearGradient(95, 95, 95, 305)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(.5, '#0f0')
+            gradient.addColorStop(1, '#00f')
+            ctx.strokeStyle = gradient
+            ctx.lineWidth = 10
+            ctx.strokeRect(100, 100, 200, 200)
+        })();
+        //填充线性渐变
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createLinearGradient(95, 95, 95, 305)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(.5, '#0f0')
+            gradient.addColorStop(1, '#00f')
+            ctx.fillStyle = gradient
+            ctx.fillRect(100, 100, 200, 200)
+        })();
+
+        //填充线性渐变
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createLinearGradient(100, 0, 300, 0)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(.5, '#0f0')
+            gradient.addColorStop(1, '#00f')
+            ctx.fillStyle = gradient
+            ctx.fillRect(100, 100, 200, 200)
+        })();
+
+        //渐变颜色范围比图形小
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createLinearGradient(100, 0, 300, 0)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(.5, '#0f0')
+            gradient.addColorStop(1, '#00f')
+            ctx.fillStyle = gradient
+            ctx.fillRect(0, 0, 400, 400)
+        })();
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 以下均为字符串实例（原型）方法
+         * 1.str.includes(text,index)  判断字符串中是否包含指定的子字符串
+         *      text 字符串中指定的子字符串
+         *      index 表示从指定的下标查找 不传默认0
+         *      return Boolean
+         * 
+         * 2.str.startsWith(text,index) 判断字符串中是否以指定字符串开头
+         *      text 字符串中指定的子字符串
+         *      index 表示从指定的下标查找 不传默认0
+         *      return Boolean
+         * 
+         * 3.str.endsWidth(text,index) 判断字符串中是否以指定字符串结尾(同上)
+         * 
+         * 4.str.repeat(number)    将字符串重复指定的次数，返回新的字符串
+         */
+
+        //includes
+        const text = '宇宙无敌暴龙战士'
+        console.log('是否包含“宇”：', text.includes('宇'));
+        console.log(text.includes('宇', 1));
+
+        //startsWith
+        console.log('是否以“宇宙”开头：', text.startsWith('宇宙',1));
+
+        //endsWidth
+        console.log('是否以“战士”结尾：', text.endsWith('战士'));
+
+        //repeat
+        console.log(text.repeat(4));
+    </script>
+</body>
+
+</html>

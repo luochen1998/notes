@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+ </head>
+
+ <body>
+  <div style="padding-bottom: 10px">
+   <button>下载同心圆</button>
+   <button>下载美少女战士</button>
+  </div>
+  <script>
+   const createCanvas = (width = 400, height = 400) => {
+    const canvas = document.createElement("canvas");
+    document.body.append(canvas);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.border = "1px solid";
+    const ctx = canvas.getContext("2d");
+    return ctx;
+   };
+
+   /**
+    * 1.canvas本身也是一个图像，也可以作为图像元引入另一个canvas画布中
+    * 2.canvas画布可以下载
+    *   鼠标右键另存
+    *   编程下载
+    * 下载时注意：
+    *   (1)toDataURL()默认生成png格式的base64图片，可通过传参指定图片格式
+    *       toDataURL(type,encoderOptions)
+    *           type 可选，图片格式 即图片的默认格式为 image/png。
+    *           encoderOptions 可选，在指定图片格式为JPEG或WebP时，可以选择图片质量在0到1之间的数值，超出范围将使用默认值0.92。    
+    *   (2)如果canvas中的图像来源于其他路径的图像源（img,video）,可能存在同源问题，画布会被污染
+    *       设置同源策略
+    *       服务器启动
+    */
+
+   //绘制同心圆
+   const ctx1 = createCanvas();
+   ctx1.moveTo(200, 0);
+   ctx1.lineTo(200, 400);
+   ctx1.stroke();
+   ctx1.beginPath();
+   ctx1.moveTo(0, 200);
+   ctx1.lineTo(400, 200);
+   ctx1.stroke();
+   for (let i = 1; i <= 5; i++) {
+    ctx1.beginPath();
+    ctx1.arc(200, 200, 40 * i, 0, Math.PI * 2);
+    ctx1.stroke();
+   }
+
+   //加载canvas图像 和下载
+   const canvas1 = document.querySelectorAll("canvas")[0];
+   const ctx2 = createCanvas();
+   ctx2.drawImage(canvas1, 0, 0, 200, 200, 0, 0, 200, 200);
+   ctx2.stroke();
+   const btn1 = document.querySelectorAll("button")[0];
+   btn1.addEventListener("click", () => {
+    const url = canvas1.toDataURL(); //得到一个base64的图片路径，默认生成png格式，通过传递参数指定图片格式
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "同心圆下载";
+    a.click();
+   });
+
+   (function () {
+    const ctx3 = createCanvas();
+    const image = new Image();
+    image.crossOrigin = "anonymous"; //设置同源路径   video同理
+    image.src = "./image/01.png";
+    image.onload = () => {
+     ctx3.drawImage(image, 0, 0);
+     ctx3.stroke();
+    };
+    const btn2 = document.querySelectorAll("button")[1];
+    const canvas3 = document.querySelectorAll("canvas")[2];
+    btn2.addEventListener("click", () => {
+     //  const url = canvas3.toDataURL("image/jpeg");
+     const url = canvas3.toDataURL();
+     const a = document.createElement("a");
+     a.href = url;
+     a.download = "美少女战士下载";
+     a.click();
+    });
+   })();
+  </script>
+ </body>
+</html>

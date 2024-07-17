@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+
+        /** 贝塞尔曲线原理
+         * canvas提供了一种绘制曲线的方式，贝塞尔曲线
+         * 二次贝塞尔曲线和三次贝塞尔曲线
+         * 有一个起点和终点
+         * 在两点中间，有多个控制点
+         *   1.有一个控制点称为二次贝塞尔曲线
+         *   2.有两个控制点称为三次贝塞尔曲线
+         *    。。。。
+         * 从起点经过控制点到终点依次连线
+         * 提供一个参数t  在[0-1]范围内变化
+         * 每一个t 都存在以下情况
+         *  在对任意线段钟，从起点到终点，存在一个中间点，使得前部分线段/整条线段=t
+         *  对每条线段的这些点，在一次连接，形成了一批新的线段（比之前一批少一条）
+         *  在新的一批线段中，依然存在符合比例t的点
+         *  重复之前的连线，找点的操作
+         *  直到找到最后一个点，就是贝塞尔曲线在当前比例t时曲线的点
+         *  当t在0-1范围变化时，每次都会有一个这样的点，这些线点连接后就形成了贝塞尔曲线
+         */
+
+        // 1.绘制二次贝塞尔曲线
+        // 使用ctx.quadraticCurveTo(cpx, cpy, x, y)绘制贝塞尔曲线
+        // cpx, cpy控制点的坐标
+        // x,y终点的坐标
+        // 起始点坐标是moveTo设置  或者是上一次绘图的结尾。
+        const ctx1 = createCanvas()
+        ctx1.fillStyle = 'red'
+        ctx1.arc(50, 100, 2, 0, Math.PI * 2)
+        ctx1.fill()
+        ctx1.beginPath()
+        ctx1.arc(150, 20, 2, 0, Math.PI * 2)
+        ctx1.fill()
+        ctx1.beginPath()
+        ctx1.arc(250, 100, 2, 0, Math.PI * 2)
+        ctx1.fill()
+        ctx1.beginPath()
+        ctx1.lineWidth = 4
+        ctx1.strokeStyle = '#0f0'
+        ctx1.moveTo(50, 100)
+        ctx1.quadraticCurveTo(150, 20, 250, 100)
+        ctx1.stroke()
+
+        //绘制爱心
+        ctx1.strokeStyle = '#00f'
+        ctx1.lineWidth = 2
+        ctx1.beginPath()
+        ctx1.moveTo(200, 200)
+        ctx1.quadraticCurveTo(260, 160, 200, 250)
+        ctx1.stroke()
+        ctx1.strokeStyle = '#f00'
+        ctx1.lineWidth = 2
+        ctx1.beginPath()
+        ctx1.moveTo(200, 200)
+        ctx1.quadraticCurveTo(140, 160, 200, 250)
+        ctx1.stroke()
+        //
+
+
+        // 2.绘制三次贝塞尔曲线
+        // 使用ctx.bezierCurveTo(cpx1, cpy1,cpx2, cpy2, x, y)绘制贝塞尔曲线
+        // cpx, cpy控制点1的坐标
+        // cpx2, cpy2控制点2的坐标
+        // x,y终点的坐标
+        // 起始点坐标是moveTo设置  或者是上一次绘图的结尾。
+        const ctx2 = createCanvas()
+        ctx2.fillStyle = 'red'
+        ctx2.beginPath()
+        ctx2.arc(100, 200, 4, 0, Math.PI * 2)
+        ctx2.fill()
+        ctx2.beginPath()
+        ctx2.arc(170, 100, 4, 0, Math.PI * 2)
+        ctx2.fill()
+        ctx2.beginPath()
+        ctx2.arc(250, 300, 4, 0, Math.PI * 2)
+        ctx2.fill()
+        ctx2.beginPath()
+        ctx2.arc(300, 200, 4, 0, Math.PI * 2)
+        ctx2.fill()
+        ctx2.beginPath()
+        ctx2.moveTo(100, 200)
+        ctx2.bezierCurveTo(120, 100, 200, 300, 300, 200)
+        ctx2.stroke()
+
+    </script>
+</body>
+
+</html>

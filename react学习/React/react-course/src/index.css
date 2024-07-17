@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background-color: #dfdfdf;
+}
+.logs {
+  background-color: #e3dbb3;
+  margin: 0 20px;
+}
+.item {
+  height: 100px;
+
+  background-color: #fbbd4f;
+  display: flex;
+  align-items: center;
+  padding:  5px;
+}
+.date {
+  width: 90px;
+  border-radius: 5px;
+  text-align: center;
+  overflow: hidden;
+
+}
+.month {
+  background-color: #d42628;
+  font-size: 20px;
+  height: 30px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 30px;
+}
+.day {
+  height: 60px;
+  line-height: 60px;
+  background-color: #fff;
+  font-size: 50px;
+  font-weight: 700;
+}
+.content{
+    flex: auto;
+    text-align: center;
+}
+.desc{
+    font-size: 14px;
+}
+.time{
+    font-size: 14px;
+    color: #d33720;
+}

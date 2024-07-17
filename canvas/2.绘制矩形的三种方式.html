@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1.canvas画布区域默认的宽高为300 和150 用width和height控制，这个区域有多大包含的坐标系就有多大,坐标系是无限大的
+        /* 2.canvas放置区域使用style样式控制的,画布区域中绘制的图形最终会在放置区域中展示，默认放置区域和画布区域一般大（相同）
+        放置区域如果比画布区域大或小，画布中的图形就会按比例放大或缩小（图像失真） */
+        //3.canvas画的是位图不是矢量图
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement('canvas')
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = '1px solid'
+            const ctx = canvas.getContext('2d')
+            return ctx
+        }
+
+
+
+        //1.创建填充矩形（实心）(x,y,width,height)
+        const ctx1 = createCanvas()
+        ctx1.fillRect(100, 100, 200, 200)
+
+        //2.创建一个描边矩形（空心）(x,y,width,height)
+        const ctx2 = createCanvas()
+        ctx2.strokeRect(100, 100, 100, 100)
+
+        //3.设置矩形路径(x,y,width,height)自定义空心或者描边或者都设置
+        const ctx3 = createCanvas()
+        //创建透明无填充无描边矩形,
+        ctx3.rect(100, 100, 100, 100) 
+
+        //设置属性需要在绘图完成前设置
+        // ctx3.fillStyle='#f00'  //设置填充颜色
+        ctx3.fillStyle='rgba(255,0,0,.5)'
+        ctx3.strokeStyle='#00f' //设置描边颜色
+        ctx3.lineWidth=5  //设置描边宽度
+        
+        ctx3.fill() //绘制填充
+        ctx3.stroke()  //绘制描边
+        //到此绘图完成
+    </script>
+</body>
+
+</html>

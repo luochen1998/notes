@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+ </head>
+ <body>
+  <script>
+   const createCanvas = (width = 400, height = 400) => {
+    const canvas = document.createElement("canvas");
+    document.body.append(canvas);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.border = "1px solid";
+    const ctx = canvas.getContext("2d");
+    return ctx;
+   };
+
+   /**
+    *  可以引用图像，作为填充背景也可以是描边
+    *  图像源可以有多种 img,canvas,video,base64等
+    *  使用ctx.createPattern(imgSource,repetition)方法创建一个图案对象。（canvasPattern）
+    *       imgSource图像源
+    *       repetition 重复机制(必填,填入''或者null默认repeat效果) repeat,repeat-x,repeat-y,no-repeat
+    *  ctx.fillStyle=pattern 或者ctx.strokeStyle=pattern
+    *
+    * 注意点：图案的平铺样式是基于画布坐标系的原点开始的
+    */
+   let bgCanvas;
+   (() => {
+    bgCanvas = document.createElement("canvas");
+    document.body.append(bgCanvas);
+    bgCanvas.width = 50;
+    bgCanvas.height = 50;
+    bgCanvas.style.border = "1px solid";
+    const ctx = bgCanvas.getContext("2d");
+    ctx.moveTo(0, 25);
+    ctx.lineTo(25, 50);
+    ctx.lineTo(50, 25);
+    ctx.lineTo(25, 0);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill(); //是否填充
+   })();
+
+   //背景填充
+   (() => {
+    const ctx = createCanvas();
+    const pattern = ctx.createPattern(bgCanvas, null);
+    ctx.fillStyle = pattern;
+    ctx.rect(0, 0, 200, 200);
+    ctx.stroke();
+    ctx.fill();
+   })();
+
+   //描边填充
+   (() => {
+    const ctx = createCanvas();
+    ctx.lineWidth = 20;
+    const pattern = ctx.createPattern(bgCanvas, null);
+    ctx.strokeStyle = pattern;
+    ctx.rect(0, 0, 200, 200);
+    ctx.stroke();
+   })();
+  </script>
+ </body>
+</html>

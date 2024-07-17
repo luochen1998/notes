@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCanvas = (width = 400, height = 400) => {
+            const canvas = document.createElement("canvas")
+            document.body.append(canvas)
+            canvas.width = width
+            canvas.height = height
+            canvas.style.border = "1px solid"
+            const ctx = canvas.getContext("2d")
+            return ctx
+        }
+        /* 径向渐变
+        *   使用 ctx.createRadialGradient(x1,y1,r1,x2,y2,r2)方法创建径向渐变对象
+        *       x1,y1,r1表示渐变开始的圆
+        *       x2,y2,r2表示渐变结束的圆
+        *       注意：一般都是一个大圆一个小圆才会有效果
+        *             小圆一定要在大圆内，否则会出现意想不到的效果（惊吓的效果）
+        *       注意：小圆以里，大圆以外的范围就是渐变的两端颜色  
+        *
+        */
+        (() => {
+            const ctx = createCanvas()
+            const gradient = ctx.createRadialGradient(250, 200, 51, 200, 200,100)
+            gradient.addColorStop(0, '#f00')
+            gradient.addColorStop(1, '#ff0')
+            ctx.fillStyle = gradient
+            ctx.arc(200, 200, 200, 0, Math.PI * 2)
+            ctx.fill()
+            ctx.stroke()
+        })();
+    </script>
+</body>
+
+</html>
